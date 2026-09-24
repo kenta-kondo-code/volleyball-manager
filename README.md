@@ -13,6 +13,21 @@
 
 ---
 
+## 利用ページ
+
+ 
+
+-VB Manager
+https://kenta-kondo-code.github.io/volleyball-manager/
+
+
+## ソースコード 
+
+-GitHub Repository
+https://github.com/xxxx/volleyball-manager
+
+---
+
 # コート配置
 
 ```text
