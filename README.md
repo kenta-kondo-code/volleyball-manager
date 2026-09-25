@@ -165,7 +165,7 @@ https://github.com/kenta-kondo-code/volleyball-manager/tree/main
 
 ### 順番変更
 
-↑ ↓ ボタンで調整可能。
+↑ ↓ ボタンで順番を入れ替え可能。または名前部分をドラッグ&ドロップでも順番の交代が可能です。
 
 ### サーブ終了
 
