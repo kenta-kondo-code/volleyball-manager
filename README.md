@@ -24,7 +24,7 @@ https://kenta-kondo-code.github.io/volleyball-manager/
 ## ソースコード 
 
 -GitHub Repository
-https://github.com/xxxx/volleyball-manager
+https://github.com/kenta-kondo-code/volleyball-manager/tree/main
 
 ---
 
