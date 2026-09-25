@@ -1,4 +1,14 @@
-<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VB Manager Ver16</title><style>body{font-family:sans-serif;max-width:1200px;margin:auto;padding:12px}.hidden{display:none}.panel{border:1px solid #ccc;border-radius:12px;padding:10px;margin-bottom:12px}.court{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.zone{min-height:180px;border:2px dashed #999;border-radius:12px;padding:8px}.pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;max-height:360px;overflow-y:auto}.card{min-height:110px;padding:10px;border-radius:12px;cursor:move;font-weight:bold;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.2)}.front{background:#90caf9}.setter{background:#fff59d}.back{background:#a5d6a7}.warn{color:red;font-weight:bold}.ok{color:green;font-weight:bold}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px}.serverNow{background:#4caf50;color:#fff;padding:6px;border-radius:6px}.serverNext{background:#ffe082;padding:6px;border-radius:6px}.serveRow{display:flex;justify-content:space-between;align-items:center;margin:4px 0;padding:4px;border-bottom:1px solid #eee}button{padding:4px 8px}</style></head><body><h2>VB Manager Ver16</h2><button onclick="show('reg')">選手登録</button> <button onclick="show('game')">試合画面</button><div id='reg'><p><input id='name'><select id='gender'><option>男性</option><option>女性</option></select><select id='pos'><option>前衛</option><option>セッター</option><option>後衛</option></select><button onclick='addPlayer()'>登録</button></p><table border='1' style='width:100%'><tbody id='plist'></tbody></table></div><div id='game' class='hidden'><div class="panel">
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VB Manager Ver16</title><style>body{font-family:sans-serif;max-width:1200px;margin:auto;padding:12px}.hidden{display:none}.panel{border:1px solid #ccc;border-radius:12px;padding:10px;margin-bottom:12px}.court{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.zone{min-height:180px;border:2px dashed #999;border-radius:12px;padding:8px}.pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;max-height:360px;overflow-y:auto}.card{min-height:110px;padding:10px;border-radius:12px;cursor:move;font-weight:bold;display:flex;flex-direction:column;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,.2)}.front{background:#90caf9}.setter{background:#fff59d}.back{background:#a5d6a7}.warn{color:red;font-weight:bold}.ok{color:green;font-weight:bold}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px}.serverNow{background:#4caf50;color:#fff;padding:6px;border-radius:6px}.serverNext{background:#ffe082;padding:6px;border-radius:6px}
+
+.serveRow{display:flex;
+justify-content:space-between;align-items:center;margin:4px 0;padding:4px;border-bottom:1px solid #eee}.serveRow{
+    cursor: grab;
+}
+
+.serveRow:active{
+    cursor: grabbing;
+    opacity: 0.6;
+}button{padding:4px 8px}</style></head><body><h2>VB Manager Ver16</h2><button onclick="show('reg')">選手登録</button> <button onclick="show('game')">試合画面</button><div id='reg'><p><input id='name'><select id='gender'><option>男性</option><option>女性</option></select><select id='pos'><option>前衛</option><option>セッター</option><option>後衛</option></select><button onclick='addPlayer()'>登録</button></p><table border='1' style='width:100%'><tbody id='plist'></tbody></table></div><div id='game' class='hidden'><div class="panel">
   <b>自チーム</b><br>
   <button onclick="scoreChange('my',-1)">－</button>
   <span id="myScore">0</span>
@@ -67,11 +77,12 @@ function renderServe(){
         draggable="true"
         data-index="${i}"
       >
-        <span>
-          ${i===0?'▶ ':i===1?'▷ ':''}
-          ${p.name}
-          ${p.location!=='bench' ? ' ✅' : ''}
-        </span>
+     <span>
+  ⠿
+  ${i===0?'▶ ':i===1?'▷ ':''}
+  ${p.name}
+  ${p.location!=='bench' ? ' ✅' : ''}
+</span>
 
         <span>
           <button onclick='moveUp(${i})'>↑</button>
