@@ -23,7 +23,7 @@
 
 <div class='zone' data-loc='LB'>⑤ LB</div>
 <div class='zone' data-loc='CB'>⑥ CB</div>
-<div class='zone' data-loc='RB'>① RB</div></div></div><div class='panel'><h3>ベンチ</h3><div id='bench' class='pool'></div></div><div class='bottom'><div class='panel'><h3>出場Pt少ない順</h3><div id='rank'></div></div><div class='panel'><h3>サーブ順</h3><button onclick='rotateServer()'>サーブ終了</button><div id='serveList'></div></div></div></div><script>const KEY='vb16';let state=JSON.parse(localStorage.getItem(KEY)||'{"players":[],"myScore":0,"oppScore":0,"serveOrder":[]}');
+<div class='zone' data-loc='RB'>① RB</div></div></div><div class='panel'><h3>ベンチ</h3><div id='bench' class='pool'></div></div><div class='bottom'><div class='panel'><h3>出場Pt少ない順</h3><div id='rank'></div></div><div class='panel'><h3>サーブ順</h3><button onclick='rotateServer()'>サーブ終了</button><div id='serveList'></div></div></div></div><script>const KEY='vb16';let dragServeIndex=null;let state=JSON.parse(localStorage.getItem(KEY)||'{"players":[],"myScore":0,"oppScore":0,"serveOrder":[]}');
 
 if(state.score!==undefined){
   state.myScore=state.score;
@@ -41,11 +41,74 @@ if(state.score!==undefined){
 document.querySelectorAll('.zone').forEach(
   z=>z.innerHTML=labels[z.dataset.loc]
 );state.players.forEach(p=>{if(p.location==='bench')bench.insertAdjacentHTML('beforeend',cardHtml(p));else{let z=document.querySelector(`[data-loc="${p.location}"]`);if(z)z.insertAdjacentHTML('beforeend',cardHtml(p));}});bind();rank.innerHTML=[...state.players].sort((a,b)=>a.pts-b.pts).map(p=>`${p.name} (${p.pts}pt)`).join('<br>');let f=state.players.filter(p=>p.location!=='bench'&&p.gender==='女性').length;female.className=f>=2?'ok':'warn';female.textContent=f>=2?`女性 ${f}名 ✅`:`女性 ${f}名 ⚠`;myScore.textContent=state.myScore;
-oppScore.textContent=state.oppScore;renderServe();}function renderServe(){serveList.innerHTML='';state.serveOrder.forEach((id,i)=>{const p=state.players.find(x=>x.id===id);if(!p)return;let c='';if(i===0)c='serverNow';else if(i===1)c='serverNext';serveList.innerHTML+=`<div class="serveRow ${c}"><span>
+oppScore.textContent=state.oppScore;renderServe();}
+function renderServe(){serveserveList.innerHTMLList.innerHTML='';state.serveOrder.forEach((id,i)=>{const p=state.players.find(x=>x.id===id);if(!p)return;let c='';if(i===0)c='serverNow';else if(i===1)c='serverNext';+=`<div class="serveRow ${c}"draggable="true"
+data-index="${i}"><span>
 ${i===0?'▶ ':i===1?'▷ ':''}
 ${p.name}
 ${p.location!=='bench' ? ' ✅' : ''}
-</span><span><button onclick='moveUp(${i})'>↑</button><button onclick='moveDown(${i})'>↓</button></span></div>`;});}function moveUp(i){if(i<=0)return;[state.serveOrder[i-1],state.serveOrder[i]]=[state.serveOrder[i],state.serveOrder[i-1]];save()}function moveDown(i){if(i>=state.serveOrder.length-1)return;[state.serveOrder[i+1],state.serveOrder[i]]=[state.serveOrder[i],state.serveOrder[i+1]];save()}function rotateServer(){if(state.serveOrder.length<2)return;state.serveOrder.push(state.serveOrder.shift());save()}function bind(){document.querySelectorAll('.card').forEach(c=>c.ondragstart=e=>e.dataTransfer.setData('id',c.dataset.id));document.querySelectorAll('.zone,#bench').forEach(t=>{t.ondragover=e=>e.preventDefault();t.ondrop=e=>{e.preventDefault();const p=state.players.find(x=>x.id==e.dataTransfer.getData('id'));if(!p)return;if(t.id==='bench'){
+</span><span><button onclick='moveUp(${i})'>↑</button><button onclick='moveDown(${i})'>↓</button></span></div>`;});
+bindServeDrag();
+}
+function moveUp(i){if(i<=0)return;[state.serveOrder[i-1],state.serveOrder[i]]=[state.serveOrder[i],state.serveOrder[i-1]];save()}function moveDown(i){
+if(i>=state.serveOrder.length-1)return;[state.serveOrder[i+1],state.serveOrder[i]]=[state.serveOrder[i],state.serveOrder[i+1]];save()}
+function moveServe(from,to){
+
+  if(from===to)return;
+
+  const item=
+    state.serveOrder.splice(
+      from,
+      1
+    )[0];
+
+  state.serveOrder.splice(
+    to,
+    0,
+    item
+  );
+
+  save();
+
+}
+function bindServeDrag(){
+
+  document
+    .querySelectorAll('.serveRow')
+    .forEach(row=>{
+
+      row.ondragstart=e=>{
+
+        dragServeIndex=
+          Number(
+            row.dataset.index
+          );
+
+      };
+
+      row.ondragover=e=>{
+
+        e.preventDefault();
+
+      };
+
+      row.ondrop=e=>{
+
+        e.preventDefault();
+
+        moveServe(
+          dragServeIndex,
+          Number(
+            row.dataset.index
+          )
+        );
+
+      };
+
+    });
+
+}
+function rotateServer(){if(state.serveOrder.length<2)return;state.serveOrder.push(state.serveOrder.shift());save()}function bind(){document.querySelectorAll('.card').forEach(c=>c.ondragstart=e=>e.dataTransfer.setData('id',c.dataset.id));document.querySelectorAll('.zone,#bench').forEach(t=>{t.ondragover=e=>e.preventDefault();t.ondrop=e=>{e.preventDefault();const p=state.players.find(x=>x.id==e.dataTransfer.getData('id'));if(!p)return;if(t.id==='bench'){
 
   p.location='bench';
 
