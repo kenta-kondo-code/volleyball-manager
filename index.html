@@ -42,7 +42,23 @@ document.querySelectorAll('.zone').forEach(
   z=>z.innerHTML=labels[z.dataset.loc]
 );state.players.forEach(p=>{if(p.location==='bench')bench.insertAdjacentHTML('beforeend',cardHtml(p));else{let z=document.querySelector(`[data-loc="${p.location}"]`);if(z)z.insertAdjacentHTML('beforeend',cardHtml(p));}});bind();rank.innerHTML=[...state.players].sort((a,b)=>a.pts-b.pts).map(p=>`${p.name} (${p.pts}pt)`).join('<br>');let f=state.players.filter(p=>p.location!=='bench'&&p.gender==='女性').length;female.className=f>=2?'ok':'warn';female.textContent=f>=2?`女性 ${f}名 ✅`:`女性 ${f}名 ⚠`;myScore.textContent=state.myScore;
 oppScore.textContent=state.oppScore;renderServe();}
-function renderServe(){serveserveList.innerHTMLList.innerHTML='';state.serveOrder.forEach((id,i)=>{const p=state.players.find(x=>x.id===id);if(!p)return;let c='';if(i===0)c='serverNow';else if(i===1)c='serverNext';+=`<div class="serveRow ${c}"draggable="true"
+
+function renderServe(){
+
+serveList.innerHTML='';
+
+state.serveOrder.forEach((id,i)=>{
+
+  ...
+
+  let c='';
+
+  if(i===0)c='serverNow';
+  else if(i===1)c='serverNext';
+
+  serveList.innerHTML+=`
+
+<div class="serveRow ${c}" draggable="true"
 data-index="${i}"><span>
 ${i===0?'▶ ':i===1?'▷ ':''}
 ${p.name}
@@ -108,7 +124,8 @@ function bindServeDrag(){
     });
 
 }
-function rotateServer(){if(state.serveOrder.length<2)return;state.serveOrder.push(state.serveOrder.shift());save()}function bind(){document.querySelectorAll('.card').forEach(c=>c.ondragstart=e=>e.dataTransfer.setData('id',c.dataset.id));document.querySelectorAll('.zone,#bench').forEach(t=>{t.ondragover=e=>e.preventDefault();t.ondrop=e=>{e.preventDefault();const p=state.players.find(x=>x.id==e.dataTransfer.getData('id'));if(!p)return;if(t.id==='bench'){
+function rotateServer(){
+if(state.serveOrder.length<2)return;state.serveOrder.push(state.serveOrder.shift());save()}function bind(){document.querySelectorAll('.card').forEach(c=>c.ondragstart=e=>e.dataTransfer.setData('id',c.dataset.id));document.querySelectorAll('.zone,#bench').forEach(t=>{t.ondragover=e=>e.preventDefault();t.ondrop=e=>{e.preventDefault();const p=state.players.find(x=>x.id==e.dataTransfer.getData('id'));if(!p)return;if(t.id==='bench'){
 
   p.location='bench';
 
