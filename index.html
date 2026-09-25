@@ -45,28 +45,47 @@ oppScore.textContent=state.oppScore;renderServe();}
 
 function renderServe(){
 
-serveList.innerHTML='';
+  serveList.innerHTML='';
 
-state.serveOrder.forEach((id,i)=>{
+  state.serveOrder.forEach((id,i)=>{
 
-  ...
+    const p=
+      state.players.find(
+        x=>x.id===id
+      );
 
-  let c='';
+    if(!p)return;
 
-  if(i===0)c='serverNow';
-  else if(i===1)c='serverNext';
+    let c='';
 
-  serveList.innerHTML+=`
+    if(i===0)c='serverNow';
+    else if(i===1)c='serverNext';
 
-<div class="serveRow ${c}" draggable="true"
-data-index="${i}"><span>
-${i===0?'▶ ':i===1?'▷ ':''}
-${p.name}
-${p.location!=='bench' ? ' ✅' : ''}
-</span><span><button onclick='moveUp(${i})'>↑</button><button onclick='moveDown(${i})'>↓</button></span></div>`;});
-bindServeDrag();
-}
-function moveUp(i){if(i<=0)return;[state.serveOrder[i-1],state.serveOrder[i]]=[state.serveOrder[i],state.serveOrder[i-1]];save()}function moveDown(i){
+    serveList.innerHTML+=`
+      <div
+        class="serveRow ${c}"
+        draggable="true"
+        data-index="${i}"
+      >
+        <span>
+          ${i===0?'▶ ':i===1?'▷ ':''}
+          ${p.name}
+          ${p.location!=='bench' ? ' ✅' : ''}
+        </span>
+
+        <span>
+          <button onclick='moveUp(${i})'>↑</button>
+          <button onclick='moveDown(${i})'>↓</button>
+        </span>
+
+      </div>
+    `;
+
+  });
+
+  bindServeDrag();
+
+}function moveUp(i){if(i<=0)return;[state.serveOrder[i-1],state.serveOrder[i]]=[state.serveOrder[i],state.serveOrder[i-1]];save()}function moveDown(i){
 if(i>=state.serveOrder.length-1)return;[state.serveOrder[i+1],state.serveOrder[i]]=[state.serveOrder[i],state.serveOrder[i+1]];save()}
 function moveServe(from,to){
 
